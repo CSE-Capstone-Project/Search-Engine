@@ -174,7 +174,7 @@ include("classes/DomDocumentParser.php");
 
     };
 
-    $startUrl="https://www.nationalgeographic.com/";
+    $startUrl="https://vedantkarle.netlify.app/";
 
     followLinks($startUrl);
 ?>
