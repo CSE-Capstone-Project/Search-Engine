@@ -2,6 +2,7 @@
 
 include("config.php");
 include("classes/SiteResultsProvider.php");
+include("classes/ImageResultsProvider.php");
 
     if(isset($_GET["term"])){
         $term = $_GET["term"];
@@ -29,7 +30,12 @@ include("classes/SiteResultsProvider.php");
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Search-Engine</title>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css"
+        />
         <link rel="stylesheet" href="assets/css/style.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     </head>
 
     <body>
@@ -43,6 +49,7 @@ include("classes/SiteResultsProvider.php");
                     <div class="searchContainer">
                         <form action="search.php" method="GET">
                             <div class="searchBarContainer">
+                                <input type="hidden" name="type" value="<?php echo $type; ?>" >
                                 <input class='searchBox' type="text" name="term" value="<?php echo $term; ?>">
                                 <button class="searchIcon">
                                     <img src="assets/images/search.png" alt="search">
@@ -73,8 +80,14 @@ include("classes/SiteResultsProvider.php");
             <div class="mainResultsSection">
 
                 <?php
-                    $resultsProvider = new SiteResultsProvider($con);
-                    $pageSize = 20;
+
+                    if($type == "sites"){
+                        $resultsProvider = new SiteResultsProvider($con);
+                        $pageSize = 20;
+                    }else{
+                        $resultsProvider = new ImageResultsProvider($con);
+                        $pageSize = 30;
+                    }
 
                     $numResults =  $resultsProvider->getNumResults($term);
 
@@ -134,7 +147,10 @@ include("classes/SiteResultsProvider.php");
             </div>
 
         </div>
-
+        
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+        <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+        <script type="text/javascript" src="assets/js/script.js"></script>
     </body>
 
 </html>
